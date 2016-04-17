@@ -15,7 +15,21 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from accounts.views import (
+    render_permission_form,
+    create_permission,
+    main,
+)
+from register.views import (
+    Login,
+    Registeration,
+)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^$', main, name="main"),
+    url(r'^permission_form/$', render_permission_form),
+    url(r'^create_permission/$', create_permission, name="create_permission"),
+    url(r'^login/$', Login.as_view(), name="login"),
+    url(r'^registeration/$', Registeration.as_view(), name="register"),
 ]
