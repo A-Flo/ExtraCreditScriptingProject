@@ -3,12 +3,8 @@
 {% block body %}
 <form class="permission_form" action="{% url 'register' %}" method="POST">
 {{form.as_p}}
+<input type="hidden" name="admin" value="1">
 {% csrf_token %}
 <input type="submit" value="submit">
 </form>
-{% for DNSUser in DNSUsers %}
-<p>
-  {{ DNSUser.id }}
-</p>
-{% endfor %}
 {% endblock body %}

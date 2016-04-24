@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block body %}
+
+ERROR
+
+This site is for users only!
+Request access at....
+
+{% if not_admin %}
+You're not an admin
+{% endif %}
+
+{% endblock %}

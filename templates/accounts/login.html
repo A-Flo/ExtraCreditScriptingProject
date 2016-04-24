@@ -1,14 +1,9 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<form class="permission_form" action="{% url 'create_permission' %}" method="POST">
+<form class="permission_form" action="{% url 'login' %}" method="POST">
   {{form.as_p}}
   {% csrf_token %}
   <input type="submit" value="submit">
 </form>
-{% for permission in permissions %}
-<p>
-  {{ permission.name }}
-</p>
-{% endfor %}
 {% endblock body %}

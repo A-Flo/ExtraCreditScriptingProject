@@ -19,7 +19,11 @@ from accounts.views import (
     render_permission_form,
     create_permission,
     main,
-)
+    render_default_users,
+    delete_dnsusers,
+    confirm_delete,
+    render_administrator_form,
+    )
 from register.views import (
     Login,
     Registeration,
@@ -32,4 +36,9 @@ urlpatterns = [
     url(r'^create_permission/$', create_permission, name="create_permission"),
     url(r'^login/$', Login.as_view(), name="login"),
     url(r'^registeration/$', Registeration.as_view(), name="register"),
+    url(r'^users/$', render_default_users, name="default_users"),
+    url(r'^deleting_user/$', delete_dnsusers, name="delete_dnsuser"),
+    url(r'^confirm_delete_user/$', confirm_delete, name="confirm_delete_user"),
+    url(r'^admin_registeration/$', render_administrator_form, name="render_administrator_form"),
+
 ]

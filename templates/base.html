@@ -6,7 +6,9 @@
   </head>
   <body>
     {% block body %}
-    main
+  <a href="{% url 'main' %}">main</a>
+  <br>
+  <a href="{% url 'register' %}">Register Default Users</a>
     {% endblock body %}
   </body>
 </html>

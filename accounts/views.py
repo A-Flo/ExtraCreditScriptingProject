@@ -1,6 +1,8 @@
-from django.shortcuts import render
-from .forms import PermissionForm
-from .models import Permission
+from django.shortcuts import render, redirect
+from .forms import PermissionForm, AdministratorForm
+from .models import Permission, DNSUser, Administrator
+from django.core.urlresolvers import reverse
+from register.forms import RegisterationForm
 
 def main(request):
     return render(request, "base.html")
@@ -18,3 +20,33 @@ def create_permission(request):
     data = dict()
     data["permissions"] = Permission.objects.all()
     return render(request, "accounts/permission_form.html", data)
+
+def render_default_users(request):
+    u = request.user.id
+    data = dict()
+    admin = Administrator.objects.filter(user_id = u)
+    print admin
+    if admin:
+        data["default_users"] = DNSUser.objects.all()
+        data["form"] = RegisterationForm
+        return render(request, "accounts/default_users.html", data)
+    else:
+        data["not_admin"] = 1
+        return render(request, "accounts/error_page.html", data)
+
+def delete_dnsusers(request):
+    objectid = request.POST["objectid"]
+    DNSUser.objects.get(id = objectid).delete()
+    return redirect(reverse("default_users"))
+
+def confirm_delete(request):
+    if request.method == "POST":
+        objectid = request.POST["objectid"]
+        user = DNSUser.objects.get(id = objectid)
+        return render(request, "accounts/confirm_delete.html", {"user": user})
+
+def render_administrator_form(request):
+    form = RegisterationForm
+    data = dict()
+    data["form"] = form
+    return render(request, "accounts/administrator_registeration.html", data)

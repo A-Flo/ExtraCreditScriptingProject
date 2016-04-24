@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block body %}
+<p>
+  Create a new User!
+</p>
+<form class="" action="{% url 'register' %}" method="post">
+  {{form.as_p}}
+  {% csrf_token %}
+  <input type="submit" name="name" value="Submit">
+</form>
+<p>
+  These are the DNS users....
+</p>
+{% for u in default_users %}
+
+<div class="">
+  {{u.user.username}}
+  <form class="" action="{% url 'confirm_delete_user'%}" method="post">
+    <input type="hidden" name="objectid" value="{{u.id}}">
+    <input type="submit" name="name" value="Delete">
+    {% csrf_token %}
+  </form>
+</div>
+{% endfor %}
+{% endblock body %}

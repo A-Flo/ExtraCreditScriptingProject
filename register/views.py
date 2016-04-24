@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import authenticate, login
+from accounts.models import DNSUser, Administrator, Permission
+from django.contrib.auth.models import User
 
 from .forms import (
     RegisterationForm,
@@ -19,6 +21,9 @@ class Login(View):
     def post(self, request, *a, **kw):
         form = LoginForm(request.POST)
         data = dict()
+        u = User.objects.filter(username = request.POST["username"])
+        if not u:
+            return render(request, "accounts/error_page.html")
         if form.is_valid:
             user = authenticate(
                 username=request.POST.get('username', None),
@@ -27,9 +32,13 @@ class Login(View):
                 if user.is_active:
                     login(request, user)
                     user.is_authenticated = True
-                    return redirect(reverse_lazy("main"))
-            else: data["invalid"] = True
-        else: data["invalid"] = True
+                    return redirect(reverse_lazy("default_users"))
+            else:
+                data["invalid"] = True
+                return render(request, "accounts/error_page.html")
+        else:
+            data["invalid"] = True
+
         data["form"] = LoginForm
         return render(request, 'accounts/login.html', data)
 
@@ -46,7 +55,27 @@ class Registeration(View):
         context = dict()
         if form.is_valid:
             form.save()
-            return redirect(reverse_lazy("main"))
+            if request.POST.get("admin", None):
+                print "admin create"
+                dnsuser = {
+                    "user": User.objects.get(username = request.POST["username"])
+                }
+                a = Administrator.objects.get_or_create(**dnsuser)
+                a[0].permissions.add(Permission.objects.get(id = 1).id)
+            else:
+                dnsuser = {
+                    "user": User.objects.get(username = request.POST["username"])
+                }
+                a = DNSUser.objects.get_or_create(**dnsuser)
+            user = authenticate(
+                username=request.POST.get('username', None),
+                password=request.POST.get('password', None))
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    user.is_authenticated = True
+                    return redirect(reverse_lazy("default_users"))
+            return redirect(reverse_lazy("default_users"))
         else:
             context["invalid"] = True
             return render(request, "accounts/login.html", context)

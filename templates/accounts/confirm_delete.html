@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block body %}
+
+<div class="">
+  Do you want to delete {{user.user.username}} ?
+  <form class="" action="{% url 'delete_dnsuser'%}" method="post">
+    <input type="hidden" name="objectid" value="{{user.id}}">
+    <input type="submit" name="name" value="Confirm Delete">
+    <a href="{% url 'default_users'%}">
+    <input type="button" name="name" value="Cancel Delete">
+    </a>
+    {% csrf_token %}
+  </form>
+</div>
+{% endblock body %}

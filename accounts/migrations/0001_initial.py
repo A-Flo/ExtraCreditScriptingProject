@@ -8,7 +8,9 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
+    def foo(apps, schema_editor):
+        FooBar = apps.get_model("accounts", "Permission")
+        fb = FooBar.objects.get_or_create(name="can_manipulate_dnsusers")
     initial = True
 
     dependencies = [
@@ -63,4 +65,6 @@ class Migration(migrations.Migration):
             name='user',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),
+        migrations.RunPython(foo),
+
     ]
