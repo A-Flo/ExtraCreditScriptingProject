@@ -5,21 +5,37 @@
 </p>
 <form class="" action="{% url 'register' %}" method="post">
   {{form.as_p}}
+  <input type="hidden" name="dont_login" value="1">
   {% csrf_token %}
   <input type="submit" name="name" value="Submit">
 </form>
-<p>
-  These are the DNS users....
-</p>
-{% for u in default_users %}
+{% if default_users %}
+  <p>
+    These are the regular users....
+  </p>
+  {% for u in default_users %}
 
-<div class="">
+  <div class="">
+    {{u.user.username}}
+    <form class="" action="{% url 'user_to_admin'%}" method="post">{% csrf_token %}
+      <input type="submit" name="name" value="Change to Admin">
+      <input type="hidden" name="user_id" value="{{u.user.id}}">
+    </form>
+    <form class="" action="{% url 'confirm_delete_user'%}" method="post">
+      <input type="hidden" name="objectid" value="{{u.id}}">
+      <input type="submit" name="name" value="Delete">
+      {% csrf_token %}
+    </form>
+  </div>
+  {% endfor %}
+{% endif %}
+<p>
+  These are admin users
+</p>
+{% for u in admin_users %}
+<p class="">
   {{u.user.username}}
-  <form class="" action="{% url 'confirm_delete_user'%}" method="post">
-    <input type="hidden" name="objectid" value="{{u.id}}">
-    <input type="submit" name="name" value="Delete">
-    {% csrf_token %}
-  </form>
-</div>
+
+</p>
 {% endfor %}
 {% endblock body %}

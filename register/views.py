@@ -23,7 +23,8 @@ class Login(View):
         data = dict()
         u = User.objects.filter(username = request.POST["username"])
         if not u:
-            return render(request, "accounts/error_page.html")
+            data["not_user"] = 1
+            return render(request, "accounts/error_page.html", data)
         if form.is_valid:
             user = authenticate(
                 username=request.POST.get('username', None),
@@ -67,14 +68,15 @@ class Registeration(View):
                     "user": User.objects.get(username = request.POST["username"])
                 }
                 a = DNSUser.objects.get_or_create(**dnsuser)
-            user = authenticate(
-                username=request.POST.get('username', None),
-                password=request.POST.get('password', None))
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    user.is_authenticated = True
-                    return redirect(reverse_lazy("default_users"))
+            if not request.POST.get("dont_login"):
+                user = authenticate(
+                    username=request.POST.get('username', None),
+                    password=request.POST.get('password', None))
+                if user is not None:
+                    if user.is_active:
+                        login(request, user)
+                        user.is_authenticated = True
+                        return redirect(reverse_lazy("default_users"))
             return redirect(reverse_lazy("default_users"))
         else:
             context["invalid"] = True

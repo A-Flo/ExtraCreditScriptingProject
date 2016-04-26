@@ -1,13 +1,20 @@
 {% extends "base.html" %}
 {% block body %}
-
-ERROR
-
-This site is for users only!
-Request access at....
-
-{% if not_admin %}
-You're not an admin
+<br>
+<br>
+<div class="error">
+<img src="http://db-access.org/wp-content/uploads/2015/04/redwarning.png" alt="" />
+<br>
+<big>ERROR</big>
+<br>
+<br>
+{% if not_user %}
+You are not a user!
+Request access to become a user at....
 {% endif %}
 
+{% if not_admin %}
+You cannot access this page because you are not an admin!
+{% endif %}
+</div>
 {% endblock %}

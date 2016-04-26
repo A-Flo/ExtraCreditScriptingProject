@@ -3,12 +3,27 @@
   <head>
     <meta charset="utf-8">
     <title></title>
+    <style media="screen">
+      a{
+        margin-left: 0.5em;
+      }
+      .error{
+      width: 100%;
+      text-align: center;
+      }
+    </style>
   </head>
   <body>
+  <a href="{% url 'register' %}">Register</a>
+  <a href="{% url 'default_users' %}">Users</a>
+  <a href="{% url 'render_administrator_form' %}">Create Admin</a>
+  {% if user.is_authenticated %}
+  <div>Logged in as:  {{ user.username }}</div>
+  <a href="{% url 'logout' %}">logout</a>
+  {% else %}
+  <a href="{% url 'login' %}"></a>
+  {% endif %}
     {% block body %}
-  <a href="{% url 'main' %}">main</a>
-  <br>
-  <a href="{% url 'register' %}">Register Default Users</a>
     {% endblock body %}
   </body>
 </html>

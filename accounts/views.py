@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
 from .forms import PermissionForm, AdministratorForm
 from .models import Permission, DNSUser, Administrator
 from django.core.urlresolvers import reverse
@@ -29,6 +30,7 @@ def render_default_users(request):
     if admin:
         data["default_users"] = DNSUser.objects.all()
         data["form"] = RegisterationForm
+        data["admin_users"] = Administrator.objects.all()
         return render(request, "accounts/default_users.html", data)
     else:
         data["not_admin"] = 1
@@ -50,3 +52,11 @@ def render_administrator_form(request):
     data = dict()
     data["form"] = form
     return render(request, "accounts/administrator_registeration.html", data)
+
+def user_to_admin(request):
+    user_id = request.POST.get("user_id")
+    dnsuser = DNSUser.objects.get(user_id = user_id)
+    user = User.objects.get(username = dnsuser.user.username)
+    dnsuser.delete()
+    admin_user = Administrator.objects.create(user = user)
+    return redirect(reverse("default_users"))

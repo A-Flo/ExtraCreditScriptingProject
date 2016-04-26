@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from django.contrib.auth.views import logout_then_login
 from accounts.views import (
     render_permission_form,
     create_permission,
@@ -23,6 +24,8 @@ from accounts.views import (
     delete_dnsusers,
     confirm_delete,
     render_administrator_form,
+    user_to_admin,
+
     )
 from register.views import (
     Login,
@@ -40,5 +43,6 @@ urlpatterns = [
     url(r'^deleting_user/$', delete_dnsusers, name="delete_dnsuser"),
     url(r'^confirm_delete_user/$', confirm_delete, name="confirm_delete_user"),
     url(r'^admin_registeration/$', render_administrator_form, name="render_administrator_form"),
-
+    url(r'^user_to_admin/$', user_to_admin, name="user_to_admin"),
+    url(r'^logout/$', logout_then_login, name="logout"),
 ]
