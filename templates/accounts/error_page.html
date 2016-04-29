@@ -8,13 +8,21 @@
 <big>ERROR</big>
 <br>
 <br>
+<strong>Welcome to the site! There is a lot to do here!</strong>
+<br>
+<br>
 {% if not_user %}
 You are not a user!
-Request access to become a user at....
+Register as a new user or request access with the link below:
 {% endif %}
 
 {% if not_admin %}
-You cannot access this page because you are not an admin!
+Unfortunately, you cannot access this page because you are not an admin.
+Request access to become an admin with the link below:
 {% endif %}
+<p>
+Email the Site Administrator:
+<a href="mailto:flore1an@cmich.edu?Subject=Request%20Access" target="_top">Contact Admin</a>
+</p>
 </div>
 {% endblock %}
